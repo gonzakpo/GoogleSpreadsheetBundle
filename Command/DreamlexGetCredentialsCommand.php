@@ -19,7 +19,8 @@ class DreamlexGetCredentialsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $googleApi = $this->getContainer()->get('dreamlex_google_spreadsheet');
-        $googleApi->getClient();
+        $client = $googleApi->getClient();
+        $googleApi->clientGetToken($client);
     }
 
 }

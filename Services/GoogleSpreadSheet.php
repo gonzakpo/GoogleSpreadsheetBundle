@@ -50,7 +50,7 @@ class GoogleSpreadSheet
     public function getClient($authConfigPath = null)
     {
         if ($authConfigPath === null) {
-            $authConfigPath = __DIR__.'/../../../../app/config/client_secret.json';
+            $authConfigPath = __DIR__.'/../../../../../../app/config/client_secret.json';
         }
         $client = new \Google_Client();
         $client->setApplicationName($this->appname);
