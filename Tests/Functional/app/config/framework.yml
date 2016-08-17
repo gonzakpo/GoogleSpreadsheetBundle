@@ -1,0 +1,9 @@
+framework:
+    translator:      { fallbacks: [ru] }
+    secret: test
+    test: ~
+    form: ~
+    validation:      { enable_annotations: true }
+    csrf_protection: ~
+    session:
+        storage_id: session.storage.mock_file

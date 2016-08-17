@@ -1,0 +1,6 @@
+services:
+    dreamlex_google_spreadsheet:
+        class: Dreamlex\GoogleSpreadsheetBundle\Services\GoogleSpreadSheet
+        arguments:
+          - "%dreamlex_google_spreadsheet.scope%"
+          - "%dreamlex_google_spreadsheet.app_name%"
