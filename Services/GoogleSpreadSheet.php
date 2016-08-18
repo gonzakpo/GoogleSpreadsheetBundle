@@ -13,7 +13,7 @@ class GoogleSpreadSheet
 {
     protected $scope;
     protected $appname;
-    protected $credentialPath = __DIR__.'/../Resources/credentials/client.json';
+    protected $credentialPath = __DIR__.'/../../../../../../app/config/client.json';
     protected $authConfigPath = __DIR__.'/../../../../app/config/client_secret.json';
 
     /**
