@@ -1,6 +1,9 @@
 services:
     dreamlex_google_spreadsheet:
-        class: Dreamlex\GoogleSpreadsheetBundle\Services\GoogleSpreadSheet
+        class: Dreamlex\Bundle\GoogleSpreadsheetBundle\Spreadsheet\GoogleSpreadsheet
         arguments:
-          - "%dreamlex_google_spreadsheet.scope%"
-          - "%dreamlex_google_spreadsheet.app_name%"
+            - "%kernel.root_dir%"
+            - "%dreamlex_google_spreadsheet.app_name%"
+            - "%dreamlex_google_spreadsheet.scope%"
+            - ~
+        lazy:  true

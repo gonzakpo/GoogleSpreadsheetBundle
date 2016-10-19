@@ -2,38 +2,44 @@
   "name": "dreamlex/google-spreadsheet-bundle",
   "description": "Dreamlex Google spreadsheet bundle",
   "type": "symfony-bundle",
+  "license": "MIT",
   "authors": [
     {
-      "name": "Dreamlex Team",
-      "email": "demo@company.com"
+      "name": "Oleksii Polivaniy",
+      "email": "alexndlm@gmail.com",
+      "role": "Developer"
+    },
+    {
+      "name": "ellementA",
+      "email": "ellementacc@gmail.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Ivan Borysenko",
+      "email": "ivan.binzz.borysenko@gmail.com",
+      "role": "Developer"
     }
   ],
   "keywords": [
-    "tickets"
-  ],
-  "license": [
-    "MIT"
+    "google, spreadsheet, google sheet"
   ],
   "require": {
     "php": ">=5.3.9",
-    "symfony/symfony": "2.8.*",
-    "google/apiclient": "1.*"
-  },
-  "autoload": {
-    "psr-0": {
-      "Dreamlex\\GoogleSpreadsheetBundle": ""
-    }
-  },
-  "target-dir": "Dreamlex/GoogleSpreadsheetBundle",
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0.x-dev"
-    }
+    "symfony/symfony": "~2.8",
+    "google/apiclient": "~2.0",
+    "ocramius/proxy-manager": "^2.0"
   },
   "require-dev": {
-    "sensio/generator-bundle": "~3.0",
-    "phpunit/phpunit": "5.4.*",
-    "symfony/monolog-bundle": "~2.4"
+    "phpunit/phpunit": "5.4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Dreamlex\\Bundle\\GoogleSpreadsheetBundle\\": ""
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.x-dev"
+    }
   }
 }
-

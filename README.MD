@@ -2,19 +2,21 @@ DreamlexGoogleSpreadsheetBundle
 =======
 Installing
 --
-go to `https://developers.google.com/sheets/quickstart/php`
+Go to <https://developers.google.com/sheets/quickstart/php>
 
-pass the "Step 1"
+Follow the first step.
 
----
-Put your client_secret.json in to `/app/config/`
+Put your `client_secret.json` in to `/app/config/`
 
-run `app/console dreamlex:get-credentials`
+Execute command
+```
+app/console google-spreadsheet:set-credentials
+```
 
-Open the following link in your browser:
-  https://accounts.google.com/.....
-  
-Copy and paste your verification code into console:
-  
-Enter verification code: yourvefificationcode
+Usage
+--
+```php
+$googleSpreadsheet = $this->container->get('dreamlex_google_spreadsheet');
+$tabelData = $googleSpreadsheet->getTable('1_ApzX0ZEpN79EL4v_rSpU1PxpgYYOCDKfet7_le0suM', 'IP!A2:B');
 
+```

@@ -1,19 +1,20 @@
 <?php
-
-namespace Dreamlex\GoogleSpreadsheetBundle\DependencyInjection;
+namespace Dreamlex\Bundle\GoogleSpreadsheetBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This is the class that validates and merges configuration from your app/config files.
+ * Class Configuration
  *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/configuration.html}
+ * @package Dreamlex\Bundle\GoogleSpreadsheetBundle\DependencyInjection
  */
 class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @throws \RuntimeException
      */
     public function getConfigTreeBuilder()
     {
@@ -22,9 +23,15 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('scope')->defaultValue('readonly')->cannotBeEmpty()->end()
-            ->scalarNode('app_name')->defaultValue('app')->cannotBeEmpty()->end()
+                ->scalarNode('scope')
+                    ->defaultValue('readonly')
+                    ->cannotBeEmpty()
+                ->end()
+                ->scalarNode('app_name')
+                    ->cannotBeEmpty()
+                ->end()
             ->end();
+
         return $treeBuilder;
     }
 }
