@@ -21,7 +21,9 @@
     }
   ],
   "keywords": [
-    "google, spreadsheet, google sheet"
+    "google",
+    "spreadsheet",
+    "google sheet"
   ],
   "require": {
     "php": ">=5.3.9",
