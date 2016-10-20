@@ -1,0 +1,15 @@
+imports:
+    - { resource: ../config/default.yml }
+
+dreamlex_google_spreadsheet:
+    app_name:  dreamlex-google-spreadsheet-bundle-test-spreadsheet
+
+services:
+    dreamlex_google_spreadsheet:
+        class: Dreamlex\Bundle\GoogleSpreadsheetBundle\Spreadsheet\GoogleSpreadsheet
+        arguments:
+            - "%kernel.root_dir%"
+            - "%dreamlex_google_spreadsheet.app_name%"
+            - "%dreamlex_google_spreadsheet.scope%"
+            - "%kernel.root_dir%/Command/client_secret.json"
+        lazy:  true

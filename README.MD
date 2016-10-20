@@ -17,6 +17,6 @@ Usage
 --
 ```php
 $googleSpreadsheet = $this->container->get('dreamlex_google_spreadsheet');
-$tabelData = $googleSpreadsheet->getTable('1_ApzX0ZEpN79EL4v_rSpU1PxpgYYOCDKfet7_le0suM', 'IP!A2:B');
+$tableData = $googleSpreadsheet->getTable('1_ApzX0ZEpN79EL4v_rSpU1PxpgYYOCDKfet7_le0suM', 'IP!A2:B');
 
 ```

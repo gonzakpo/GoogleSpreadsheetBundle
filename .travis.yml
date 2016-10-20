@@ -1,0 +1,9 @@
+language: php
+
+php:
+  - 7.0
+
+matrix:
+  fast_finish: true
+
+install: composer install
