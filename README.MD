@@ -1,5 +1,8 @@
 DreamlexGoogleSpreadsheetBundle
 =======
+[![Build Status](https://travis-ci.org/Dreamlex/GoogleSpreadsheetBundle.svg?branch=master)](https://travis-ci.org/Dreamlex/GoogleSpreadsheetBundle)
+
+
 Installing
 --
 Go to <https://developers.google.com/sheets/quickstart/php>
