@@ -1,5 +1,5 @@
 {
-  "name": "dreamlex/google-spreadsheet-bundle",
+  "name": "gonzakpo/google-spreadsheet-bundle",
   "description": "Dreamlex Google spreadsheet bundle",
   "type": "symfony-bundle",
   "license": "MIT",
@@ -26,8 +26,7 @@
     "google sheet"
   ],
   "require": {
-    "php": ">=5.3.9",
-    "symfony/symfony": "~2.8",
+    "symfony/symfony": "~2.8 || ~3.1",
     "google/apiclient": "~2.0",
     "ocramius/proxy-manager": "^2.0",
     "dreamlex/core-bundle": "dev-master"
