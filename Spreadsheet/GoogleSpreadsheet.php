@@ -102,16 +102,11 @@ class GoogleSpreadsheet
     public function getTable($spreadsheetId, $range = null)
     {
         $service = new \Google_Service_Sheets($this->getAuthorizedClient());
-        $response = $service->spreadsheets_values->get($spreadsheetId, $range);
-
-        return $response->getValues();
-    }
-
-    public function getTables($spreadsheetId)
-    {
-        $service = new \Google_Service_Sheets($this->getAuthorizedClient());
-dump($service);die;
-        $response = $service->spreadsheets->get($spreadsheetId);
+        if ($range) {
+            $response = $service->spreadsheets_values->get($spreadsheetId, $range)->getValues();
+        } else {
+            $response = $service->spreadsheets->get($spreadsheetId);
+        }
 
         return $response;
     }
@@ -127,9 +122,14 @@ dump($service);die;
         $newPermission->setType('user');
         $newPermission->setRole('writer');
         $optParams = array('sendNotificationEmail' => false);
-        $drive->permissions->create($ss->spreadsheetId,$newPermission,$optParams);
+        try {
+            $drive->permissions->create($ss->spreadsheetId,$newPermission,$optParams);
+            $return = true;
+        } catch (Exception $e) {
+            $return = $e->getMessage();
+        }
 
-        return true;
+        return $return;
     }
 
     /**
