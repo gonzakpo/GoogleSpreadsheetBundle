@@ -3,6 +3,14 @@ namespace Dreamlex\Bundle\GoogleSpreadsheetBundle\Spreadsheet;
 
 use Symfony\Component\Filesystem\Filesystem;
 
+use Google_Client as G_Client;
+use Google_Service_Drive as GS_Drive;
+use Google_Service_Drive_Permission as GS_Drive_Permission;
+use Google_Service_Sheets as GS_Sheets;
+use Google_Service_Sheets_Spreadsheet as GS_Sheets_Ss;
+use Google_Service_Sheets_SpreadsheetProperties as GS_Sheets_SsProperties;
+use Google_Service_Sheets_ValueRange as GS_Sheets_VR;
+
 /**
  * Class GoogleSpreadsheet
  *
@@ -85,7 +93,7 @@ class GoogleSpreadsheet
 
         $this->fs = new Filesystem();
 
-        $this->client = new \Google_Client();
+        $this->client = new G_Client();
         $this->client->setApplicationName($appName);
         $this->client->setScopes($setScopes);
         $this->client->setAuthConfigFile($authConfigPath);
@@ -101,7 +109,8 @@ class GoogleSpreadsheet
      */
     public function getTable($spreadsheetId, $range = null)
     {
-        $service = new \Google_Service_Sheets($this->getAuthorizedClient());
+        $service = new GS_Sheets($this->getAuthorizedClient());
+
         if ($range) {
             $response = $service->spreadsheets_values->get($spreadsheetId, $range)->getValues();
         } else {
@@ -111,25 +120,92 @@ class GoogleSpreadsheet
         return $response;
     }
 
-    public function createTable()
+    /**
+     * @param string $title title is filename
+     *
+     * @return string
+     */
+    public function createTable($title)
     {
-        $service = new \Google_Service_Sheets($this->getAuthorizedClient());
-        $drive = new \Google_Service_Drive($this->getAuthorizedClient());
+        $service = new GS_Sheets($this->getAuthorizedClient());
 
-        $ss = $service->spreadsheets->create(new \Google_Service_Sheets_Spreadsheet());
-        $newPermission = new \Google_Service_Drive_Permission();
-        $newPermission->setEmailAddress("gonzaloalonsod@gmail.com");
-        $newPermission->setType('user');
-        $newPermission->setRole('writer');
-        $optParams = array('sendNotificationEmail' => false);
-        try {
-            $drive->permissions->create($ss->spreadsheetId,$newPermission,$optParams);
-            $return = true;
-        } catch (Exception $e) {
-            $return = $e->getMessage();
-        }
+        $properties = new GS_Sheets_SsProperties();
+        $properties->setTitle($title);
 
-        return $return;
+        $newSheet = new GS_Sheets_Ss();
+        $newSheet->setProperties($properties);
+        $newSheet = $service->spreadsheets->create($newSheet);
+
+        return $newSheet->spreadsheetId;
+    }
+
+    /**
+     * @param string $spreadsheetId spreadsheetId
+     * @param string $email email
+     * @param string $type type is user
+     * @param string $role role is writer
+     * @param boolean $sendNotificationEmail send mail is false
+     */
+    public function addPermissionTable($spreadsheetId, $email, $type = 'user', $role = 'writer', $sendNotificationEmail = false)
+    {
+        $drive = new GS_Drive($this->getAuthorizedClient());
+
+        $newPermission = new GS_Drive_Permission();
+        $newPermission->setEmailAddress($email);
+        $newPermission->setType($type);
+        $newPermission->setRole($role);
+
+        $optParams = array('sendNotificationEmail' => $sendNotificationEmail);
+
+        $drive->permissions->create($spreadsheetId, $newPermission, $optParams);
+    }
+
+    /**
+     * @param string $spreadsheetId spreadsheetId
+     * @param string $range         Range
+     * @param array $values values
+     *
+     * @return string
+     */
+    public function addRowTable($spreadsheetId, $range, $values)
+    {
+        $service = new GS_Sheets($this->getAuthorizedClient());
+
+        $body = new GS_Sheets_VR(array(
+          'values' => $values
+        ));
+        $params = array(
+          'valueInputOption' => 'USER_ENTERED'
+        );
+
+        $result = $service->spreadsheets_values->append($spreadsheetId, $range,
+            $body, $params);
+
+        return $result;
+    }
+
+    /**
+     * @param string $spreadsheetId spreadsheetId
+     * @param string $range         Range
+     * @param array $values values
+     *
+     * @return string
+     */
+    public function updateRowTable($spreadsheetId, $range, $values)
+    {
+        $service = new GS_Sheets($this->getAuthorizedClient());
+
+        $body = new GS_Sheets_VR(array(
+          'values' => $values
+        ));
+        $params = array(
+          'valueInputOption' => 'USER_ENTERED'
+        );
+
+        $result = $service->spreadsheets_values->update($spreadsheetId, $range,
+            $body, $params);
+
+        return $result;
     }
 
     /**

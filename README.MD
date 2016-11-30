@@ -23,3 +23,11 @@ $googleSpreadsheet = $this->container->get('dreamlex_google_spreadsheet');
 $tableData = $googleSpreadsheet->getTable('1_ApzX0ZEpN79EL4v_rSpU1PxpgYYOCDKfet7_le0suM', 'IP!A2:B');
 
 ```
+Functions
+```php
+getTable($spreadsheetId, $range = null)
+createTable($title)
+addPermissionTable($spreadsheetId, $email, $type = 'user', $role = 'writer', $sendNotificationEmail = false)
+addRowTable($spreadsheetId, $range, $values)
+updateRowTable($spreadsheetId, $range, $values)
+```
