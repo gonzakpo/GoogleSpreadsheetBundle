@@ -31,7 +31,14 @@ class GoogleSpreadsheet
     protected $client;
 
     protected $scopes = [
-        'readonly' => 'https://www.googleapis.com/auth/spreadsheets.readonly',
+        /** View and manage the files in your Google Drive. */
+        'drive' => 'https://www.googleapis.com/auth/drive',
+        /** View the files in your Google Drive. */
+        'drive_readonly' => 'https://www.googleapis.com/auth/drive.readonly',
+        /** View and manage your spreadsheets in Google Drive. */
+        'spreadsheets' => 'https://www.googleapis.com/auth/spreadsheets',
+        /** View your Google Spreadsheets. */
+        'spreadsheets_readonly' => 'https://www.googleapis.com/auth/spreadsheets.readonly',
     ];
 
     /**
@@ -49,23 +56,28 @@ class GoogleSpreadsheet
      *
      * @param string $kernelRootDir
      * @param string $appName
-     * @param string $scope
+     * @param array  $scopes
      * @param string $authConfigPath
      *
      * @throws \InvalidArgumentException
      * @throws \Google_Exception
      * @throws \Symfony\Component\Filesystem\Exception\IOException
      */
-    public function __construct($kernelRootDir, $appName, $scope = 'readonly', $authConfigPath = null)
+    public function __construct($kernelRootDir, $appName, $scopes = array('readonly'), $authConfigPath = null)
     {
-        if (false === array_key_exists($scope, $this->scopes)) {
-            throw new \InvalidArgumentException('Unknown scope');
+        $setScopes = array();
+
+        foreach ($scopes as $scope) {
+            if (false === array_key_exists($scope, $this->scopes)) {
+                throw new \InvalidArgumentException('Unknown scope');
+            } else {
+                array_push($setScopes, $this->scopes[$scope]);
+            }
         }
 
         $this->appName = $appName;
         $this->kernelRootDir = $kernelRootDir;
         $this->credentialsFilename = $kernelRootDir.'/config/credentials/'.$this->appName.'.json';
-        $this->scope = $scope;
 
         if ($authConfigPath === null) {
             $authConfigPath = $this->kernelRootDir.'/config/client_secret.json';
@@ -75,7 +87,7 @@ class GoogleSpreadsheet
 
         $this->client = new \Google_Client();
         $this->client->setApplicationName($appName);
-        $this->client->setScopes($this->scopes[$scope]);
+        $this->client->setScopes($setScopes);
         $this->client->setAuthConfigFile($authConfigPath);
         $this->client->setAccessType('offline');
         $this->isAuthorized = false;
@@ -95,6 +107,31 @@ class GoogleSpreadsheet
         return $response->getValues();
     }
 
+    public function getTables($spreadsheetId)
+    {
+        $service = new \Google_Service_Sheets($this->getAuthorizedClient());
+dump($service);die;
+        $response = $service->spreadsheets->get($spreadsheetId);
+
+        return $response;
+    }
+
+    public function createTable()
+    {
+        $service = new \Google_Service_Sheets($this->getAuthorizedClient());
+        $drive = new \Google_Service_Drive($this->getAuthorizedClient());
+
+        $ss = $service->spreadsheets->create(new \Google_Service_Sheets_Spreadsheet());
+        $newPermission = new \Google_Service_Drive_Permission();
+        $newPermission->setEmailAddress("gonzaloalonsod@gmail.com");
+        $newPermission->setType('user');
+        $newPermission->setRole('writer');
+        $optParams = array('sendNotificationEmail' => false);
+        $drive->permissions->create($ss->spreadsheetId,$newPermission,$optParams);
+
+        return true;
+    }
+
     /**
      * @return \Google_Client the authorized client object
      */
@@ -106,7 +143,7 @@ class GoogleSpreadsheet
     /**
      * @return string
      */
-    public function getCredentialsFilename(): string
+    public function getCredentialsFilename()
     {
         return $this->credentialsFilename;
     }

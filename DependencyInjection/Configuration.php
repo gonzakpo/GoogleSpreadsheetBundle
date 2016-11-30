@@ -23,9 +23,11 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('scope')
-                    ->defaultValue('readonly')
-                    ->cannotBeEmpty()
+                ->arrayNode('scope')
+                    ->prototype('scalar')
+                        ->defaultValue('spreadsheets_readonly')
+                        ->cannotBeEmpty()
+                    ->end()
                 ->end()
                 ->scalarNode('app_name')
                     ->cannotBeEmpty()
